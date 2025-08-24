@@ -449,8 +449,9 @@ def upload_csv():
     
     return jsonify({'error': 'Invalid file type. Please upload a CSV file'}), 400
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))  # Use Render's PORT
+    app.run(host="0.0.0.0", port=port)
 
 
     
