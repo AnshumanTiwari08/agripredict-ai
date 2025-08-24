@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - Crop Yield Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <link rel="stylesheet" href="{{ url_for('serve_css', filename='style.css') }}">
+  <style>
+    /* Specific styles for the contact form */
+    .contact-section {
+      padding: 4rem 0 !important;
+      background: none !important; /* Remove specific background to let body background show */
+    }
+    
+    .contact-section h1 { /* Changed from h2 to h1 for the main page title */
+      font-family: 'Montserrat', sans-serif !important;
+      text-align: center !important;
+      margin-bottom: 1rem !important;
+      color: var(--original-dark-green) !important; /* Use variable from style.css */
+      font-size: 3rem !important; /* Larger for main title */
+      font-weight: 700 !important;
+    }
+
+    .contact-subtitle {
+      text-align: center !important;
+      color: var(--text-color-dark) !important; /* Use variable from style.css */
+      font-size: 1.2rem !important;
+      margin-bottom: 3rem !important;
+      max-width: 800px !important; /* Increased width */
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    /* Make the contact form container wider */
+    .contact-container-wrapper {
+      max-width: 950px !important; /* Increased width */
+      margin: 0 auto;
+      padding: 0 20px; /* Add some padding for smaller screens */
+    }
+
+    /* Adjustments for the form within the .container */
+    .contact-form-inner {
+      /* This div will now be the .container from style.css */
+      padding: 40px; /* Match .container padding */
+    }
+
+    .contact-form-inner h3 {
+      font-family: 'Montserrat', sans-serif !important;
+      color: var(--original-dark-green) !important;
+      margin-bottom: 2rem !important;
+      text-align: center !important;
+      font-size: 1.8rem !important;
+    }
+
+    /* Reusing form-group, label, input, textarea styles from style.css */
+    /* Overriding specific contact.html styles that might conflict */
+    .form-group label {
+      color: var(--text-color-dark) !important; /* Ensure it uses the main text color */
+      font-weight: 600 !important; /* Match style.css */
+      font-family: 'Roboto', sans-serif !important; /* Match style.css */
+      margin-top: 25px !important; /* Match style.css */
+      font-size: 1.15em !important; /* Match style.css */
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: calc(100% - 26px) !important; /* Match style.css */
+      padding: 14px !important; /* Match style.css */
+      margin-top: 10px !important; /* Match style.css */
+      border-radius: 12px !important; /* Match style.css */
+      border: 1px solid var(--glass-border) !important; /* Match style.css */
+      background-color: var(--input-bg) !important; /* Match style.css */
+      color: var(--text-color-dark) !important; /* Match style.css */
+      font-size: 1.05em !important; /* Match style.css */
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.15) !important; /* Match style.css */
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none !important;
+      border-color: var(--input-border-focus) !important; /* Match style.css */
+      box-shadow: 0 0 0 5px rgba(45, 134, 45, 0.4), inset 0 1px 4px rgba(0,0,0,0.15) !important; /* Match style.css */
+      background-color: var(--text-color-light) !important; /* Match style.css */
+    }
+
+    /* Placeholder text color and font-weight */
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: white !important; /* White placeholder text */
+      font-weight: bold !important; /* Bold placeholder text */
+      opacity: 0.7 !important; /* Make it slightly transparent */
+    }
+
+    .submit-btn {
+      /* This will now use the .button, button[type="submit"] styles from style.css */
+      margin-top: 40px !important; /* Match style.css */
+      padding: 18px !important; /* Match style.css */
+      font-size: 1.3em !important; /* Match style.css */
+      font-weight: 700 !important; /* Match style.css */
+      border-radius: 12px !important; /* Match style.css */
+      background: linear-gradient(45deg, var(--original-dark-green), var(--original-darker-green)) !important; /* Match style.css */
+      color: var(--text-color-light) !important; /* Match style.css */
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3) !important; /* Match style.css */
+      letter-spacing: 1px !important; /* Match style.css */
+      text-transform: uppercase !important; /* Match style.css */
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(45deg, var(--original-darker-green), var(--original-dark-green)) !important; /* Match style.css */
+      transform: translateY(-5px) scale(1.02) !important; /* Match style.css */
+      box-shadow: 0 15px 30px rgba(0,0,0,0.5) !important; /* Match style.css */
+    }
+
+    /* Popup success message */
+    .success-popup {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      background: rgba(212, 237, 218, 0.95) !important;
+      color: #155724 !important;
+      padding: 2.5rem !important;
+      border-radius: 15px !important;
+      border: 2px solid #c3e6cb !important;
+      text-align: center !important;
+      display: none; /* Hidden by default, will be set to block by JS */
+      z-index: 1000 !important;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
+      backdrop-filter: blur(10px) !important;
+      min-width: 300px !important;
+      opacity: 0; /* Start with opacity 0 for fade-in */
+      transition: opacity 0.3s ease-in-out; /* Add transition for fade effect */
+    }
+
+    .success-popup.show {
+        opacity: 1; /* Show with opacity 1 */
+    }
+
+    .success-popup i {
+      font-size: 3rem !important;
+      margin-bottom: 1rem !important;
+      display: block !important;
+      color: #28a745 !important;
+    }
+
+    .success-popup p {
+      font-size: 1.3rem !important;
+      margin: 0 !important;
+      font-weight: 600 !important;
+      font-family: 'Montserrat', sans-serif !important;
+    }
+
+    .overlay {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      background: rgba(0,0,0,0.5) !important;
+      backdrop-filter: blur(5px) !important;
+      display: none; /* Hidden by default, will be set to block by JS */
+      z-index: 999 !important;
+      opacity: 0; /* Start with opacity 0 for fade-in */
+      transition: opacity 0.3s ease-in-out; /* Add transition for fade effect */
+    }
+
+    .overlay.show {
+        opacity: 1; /* Show with opacity 1 */
+    }
+
+    .contact-info-note {
+      text-align: center !important;
+      color: var(--text-color-dark) !important;
+      font-size: 0.9em !important;
+      margin-top: 2rem !important;
+      padding: 1.5rem !important;
+      background: var(--glass-bg) !important;
+      border-radius: 12px !important;
+      border: 1px solid var(--glass-border) !important;
+      backdrop-filter: blur(10px) !important;
+    }
+
+    /* Responsive design */
+    @media (max-width: 1024px) {
+      .contact-container-wrapper {
+        max-width: 800px !important;
+      }
+      
+      .contact-form-inner {
+        max-width: 100% !important; /* Allow form to take full width of wrapper */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .contact-container-wrapper {
+        max-width: 95% !important;
+        padding: 0 15px;
+      }
+      
+      .contact-form-inner {
+        padding: 2rem !important;
+      }
+      
+      .contact-section h1 { /* Responsive font size for main title */
+        font-size: 2.5rem !important;
+      }
+      
+      .success-popup {
+        padding: 2rem !important;
+        min-width: 250px !important;
+      }
+      
+      .success-popup i {
+        font-size: 2.5rem !important;
+      }
+      
+      .success-popup p {
+        font-size: 1.1rem !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .contact-form-inner {
+        padding: 1.5rem !important;
+      }
+      
+      .contact-section h1 { /* Responsive font size for main title */
+        font-size: 2rem !important;
+      }
+      
+      .success-popup {
+        padding: 1.5rem !important;
+        min-width: 200px !important;
+      }
+      
+      .success-popup i {
+        font-size: 2rem !important;
+      }
+      
+      .success-popup p {
+        font-size: 1rem !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="{{ url_for('index') }}" class="logo">🌾 AgriPredict AI 🌱</a>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('predict') }}">Predict</a></li>
+        <li><a href="{{ url_for('eda') }}">EDA</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Contact Form Section - Now includes the main heading -->
+    <section class="contact-section">
+      <div class="contact-container-wrapper">
+        <h1 data-aos="fade-up">Contact Us</h1> <!-- Main heading for the page -->
+        <p class="contact-subtitle" data-aos="fade-up" data-aos-delay="100">Having some queries, wanted to contact? We'd love to hear from you! Fill out the form below and we'll get back to you as soon as possible.</p>
+        
+        <div class="container contact-form-inner" data-aos="fade-up" data-aos-delay="200">
+          <h3>Send us a Message</h3>
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+              <label for="email">Your Email</label>
+              <input type="email" id="email" name="email" required placeholder="Enter your email address">
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" required placeholder="What is this regarding?">
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" required placeholder="Type your message here..."></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+          </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Success Popup -->
+  <div id="overlay" class="overlay"></div>
+  <div id="successPopup" class="success-popup">
+    <i class="fas fa-check-circle"></i>
+    <p>Your message has been sent successfully!</p>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>AgriPredict AI</h3>
+        <p>Advanced Agricultural Data Analysis and Yield Prediction Platform</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('about') }}">About</a></li>
+          <li><a href="{{ url_for('predict') }}">Predict</a></li>
+          <li><a href="{{ url_for('eda') }}">Data Analysis</a></li>
+          <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Data Sources</h4>
+        <p>Agricultural research data, weather patterns, soil analysis, and historical yield records</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2023 AgriPredict AI - Agricultural Data Analysis Platform</p>
+    </div>
+  </footer>
+
+  <script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyaSHak3V5Kf8-8S884lyzaJSC8WBvoEmcuMsIf0quWOb6cmZoY3VdvMP7VYmSLTPcG/exec";
+  const form = document.getElementById("contactForm");
+  const submitBtn = form.querySelector(".submit-btn");
+  const overlay = document.getElementById("overlay");
+  const successPopup = document.getElementById("successPopup");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault(); // prevent reload
+
+    // Change button text while sending
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    submitBtn.disabled = true;
+
+    fetch(scriptURL, { method: "POST", body: new FormData(form) })
+      .then((response) => {
+        if (response.ok) {
+          // Show popup + overlay
+          overlay.style.display = "block";
+          successPopup.style.display = "block";
+          void overlay.offsetWidth; // reflow for transition
+          void successPopup.offsetWidth;
+          overlay.classList.add("show");
+          successPopup.classList.add("show");
+
+          form.reset();
+        } else {
+          alert("❌ Failed to send message. Please try again.");
+        }
+      })
+      .catch((error) => {
+        alert("❌ Failed to send message. Please try again.");
+        console.error("Error!", error.message);
+      })
+      .finally(() => {
+        // Restore button text
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+
+        // Auto-close popup after 3s
+        setTimeout(() => {
+          overlay.classList.remove("show");
+          successPopup.classList.remove("show");
+          setTimeout(() => {
+            overlay.style.display = "none";
+            successPopup.style.display = "none";
+          }, 300); // matches CSS transition
+        }, 3000);
+      });
+  });
+</script>
+</html>

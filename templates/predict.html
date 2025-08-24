@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Yield Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('serve_css', filename='style.css') }}">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <a href="{{ url_for('index') }}" class="logo">🌾 AgriPredict AI 🌱</a>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('predict') }}">Predict</a></li>
+        <li><a href="{{ url_for('eda') }}">EDA</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+  <script src="{{ url_for('serve_js', filename='script.js') }}"></script>
+    <section class="hero-section">
+      <div class="container hero-container" data-aos="zoom-in" data-aos-delay="200">
+        <h1 data-aos="fade-up" data-aos-delay="300">Predict Your Crop Yield</h1>
+        <p data-aos="fade-up" data-aos-delay="400">Input your agricultural data to get accurate yield forecasts powered by AI.</p>
+      </div>
+    </section>
+
+    <section class="prediction-form-section">
+      <div class="container" data-aos="fade-up">
+        <h2>Enter Crop Details</h2>
+
+        <div class="input-toggle">
+          <input type="radio" id="manualInput" name="inputOption" value="manual" checked>
+          <label for="manualInput"><i class="fas fa-keyboard"></i> Manual Input</label>
+
+          <input type="radio" id="uploadCSV" name="inputOption" value="csv">
+          <label for="uploadCSV"><i class="fas fa-file-csv"></i> Upload CSV</label>
+        </div>
+
+        <form id="predictionForm" action="/predict" method="POST" enctype="multipart/form-data">
+
+          <div class="manual-input-section active">
+            <label for="state">State</label>
+            <select id="state" name="state" required>
+              <option value="">Select State</option>
+            </select>
+
+            <label for="district">District</label>
+            <select id="district" name="district" required>
+              <option value="">Select District</option>
+            </select>
+
+            <label for="crop">Crop</label>
+            <select id="crop" name="crop" required>
+              <option value="">Select Crop</option>
+              <option value="Maize">Maize</option>
+              <option value="Rice">Rice</option>
+              <option value="Cotton">Cotton</option>
+              <option value="Sugarcane">Sugarcane</option>
+              <option value="Wheat">Wheat</option>
+            </select>
+
+            <label for="crop_year">Year</label>
+            <input type="number" name="crop_year" id="crop_year" required>
+
+            <label for="season">Season</label>
+            <select id="season" name="season" required>
+              <option value="">Select Season</option>
+              <option value="Kharif">Kharif</option>
+              <option value="Rabi">Rabi</option>
+              <option value="Summer">Summer</option>
+              <option value="Whole Year">Whole Year</option>
+            </select>
+
+            <label for="area">Area (in hectares)</label>
+            <input type="number" id="area" name="area" min="0.01" step="0.01" required>
+
+            <label for="temp">Temperature (°C)</label>
+            <input type="number" id="temp" name="temperature" step="0.1" required>
+
+            <label for="rain">Rainfall (mm)</label>
+            <input type="number" id="rain" name="rainfall" step="0.1" required>
+
+            <label for="humidity">Humidity (%)</label>
+            <input type="number" id="humidity" name="humidity" step="0.1" required>
+
+            <label for="nitrogen">Nitrogen (N)</label>
+            <input type="number" id="nitrogen" name="nitrogen" step="0.1" required>
+
+            <label for="phosphorus">Phosphorus (P)</label>
+            <input type="number" id="phosphorus" name="phosphorus" step="0.1" required>
+
+            <label for="potassium">Potassium (K)</label>
+            <input type="number" id="potassium" name="potassium" step="0.1" required>
+          </div>
+
+          <div class="csv-upload-section">
+            <label for="csv_file">Upload CSV File</label>
+            <input type="file" id="csv_file" name="csv_file" accept=".csv">
+            <p class="csv-hint">
+              Ensure your CSV file has columns for: State, District, Crop, Year, Season, Area (ha), Temperature (°C), Rainfall (mm), Humidity (%), Nitrogen (kg/ha), Phosphorus (kg/ha), Potassium (kg/ha).
+            </p>
+          </div>
+
+          <button type="submit">Predict Yield</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>AgriPredict AI</h3>
+        <p>Transforming agriculture through artificial intelligence and data-driven insights.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('about') }}">About</a></li>
+          <li><a href="{{ url_for('predict') }}">Predict</a></li>
+          <li><a href="{{ url_for('eda') }}">Data Analysis</a></li>
+          <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Connect With Us</h4>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2023 AgriPredict AI. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+  </footer>
+
+  <!-- Floating Decorative Elements (Leaves/Grains) -->
+  <div class="decorative-element leaf-top-left" style="--initial-rotate: 20deg;"></div>
+  <div class="decorative-element grain-top-right" style="--initial-rotate: -10deg;"></div>
+  <div class="decorative-element leaf-bottom-left" style="--initial-rotate: -30deg;"></div>
+  <div class="decorative-element grain-bottom-right" style="--initial-rotate: 15deg;"></div>
+
+  <!-- Floating Circles -->
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+  <div class="floating-circle"></div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <<script>
+    const statesAndDistricts = {
+        "Andhra Pradesh": ["Anantapur", "Chittoor", "East Godavari", "Guntur", "Kadapa", "Krishna", "Kurnool", "Nellore", "Prakasam", "Srikakulam", "Visakhapatnam", "Vizianagaram", "West Godavari"],
+        "Arunachal Pradesh": ["Tawang", "West Kameng", "East Kameng", "Papum Pare", "Kurung Kumey", "Kra Daadi", "Lower Subansiri", "Upper Subansiri", "West Siang", "East Siang", "Siang", "Upper Siang", "Lower Dibang Valley", "Dibang Valley", "Anjaw", "Lohit", "Namsai", "Changlang", "Tirap", "Longding"],
+        "Assam": ["Baksa", "Barpeta", "Biswanath", "Bongaigaon", "Cachar", "Charaideo", "Chirang", "Darrang", "Dhemaji", "Dhubri", "Dibrugarh", "Goalpara", "Golaghat", "Hailakandi", "Hojai", "Jorhat", "Kamrup Metropolitan", "Kamrup", "Karbi Anglong", "Karimganj", "Kokrajhar", "Lakhimpur", "Majuli", "Morigaon", "Nagaon", "Nalbari", "Sivasagar", "Sonitpur", "South Salmara-Mankachar", "Tinsukia", "Udalgiri", "West Karbi Anglong"],
+        "Bihar": ["Araria", "Arwal", "Aurangabad", "Banka", "Begusarai", "Bhagalpur", "Bhojpur", "Buxar", "Darbhanga", "East Champaran", "Gaya", "Gopalganj", "Jamui", "Jehanabad", "Kaimur", "Katihar", "Khagaria", "Kishanganj", "Lakhisarai", "Madhepura", "Madhubani", "Munger", "Muzaffarpur", "Nalanda", "Nawada", "Patna", "Purnia", "Rohtas", "Saharsa", "Samastipur", "Saran", "Sheikhpura", "Sheohar", "Sitamarhi", "Siwan", "Supaul", "Vaishali", "West Champaran"],
+        "Chhattisgarh": ["Balod", "Baloda Bazar", "Balrampur", "Bastar", "Bemetara", "Bijapur", "Bilaspur", "Dantewada", "Dhamtari", "Durg", "Gariaband", "Janjgir-Champa", "Jashpur", "Kanker", "Kabirdham", "Kondagaon", "Korba", "Korea", "Mahasamund", "Mungeli", "Narayanpur", "Raigarh", "Rajnandgaon", "Sukma", "Surajpur", "Surguja"],
+        "Goa": ["North Goa", "South Goa"],
+        "Gujarat": ["Ahmedabad", "Amreli", "Anand", "Aravalli", "Banaskantha", "Bharuch", "Bhavnagar", "Botad", "Chhota Udaipur", "Dahod", "Dang", "Devbhoomi Dwarka", "Gandhinagar", "Gir Somnath", "Jamnagar", "Junagadh", "Kheda", "Kutch", "Mahisagar", "Mehsana", "Morbi", "Narmada", "Navsari", "Panchmahal", "Patan", "Porbandar", "Rajkot", "Sabarkantha", "Surat", "Surendranagar", "Tapi", "Vadodara", "Valsad"],
+        "Haryana": ["Ambala", "Bhiwani", "Charkhi Dadri", "Faridabad", "Fatehabad", "Gurugram", "Hisar", "Jhajjar", "Jind", "Kaithal", "Karnal", "Kurukshetra", "Mahendragarh", "Nuh", "Palwal", "Panchkula", "Panipat", "Rewari", "Rohtak", "Sirsa", "Sonipat", "Yamunanagar"],
+        "Himachal Pradesh": ["Bilaspur", "Chamba", "Hamirpur", "Kangra", "Kinnaur", "Kullu", "Lahaul and Spiti", "Mandi", "Shimla", "Sirmaur", "Solan", "Una"],
+        "Jharkhand": ["Bokaro", "Chatra", "Deoghar", "Dhanbad", "Dumka", "East Singhbhum", "Garhwa", "Giridih", "Godda", "Gumla", "Hazaribagh", "Jamtara", "Khunti", "Koderma", "Latehar", "Lohardaga", "Pakur", "Palamu", "Ramgarh", "Ranchi", "Sahibganj", "Saraikela-Kharsawan", "Simdega", "West Singhbhum"],
+        "Karnataka": ["Bagalkot", "Ballari", "Belagavi", "Bengaluru Rural", "Bengaluru Urban", "Bidar", "Chamarajanagar", "Chikballapur", "Chikkamagaluru", "Chitradurga", "Dakshina Kannada", "Davangere", "Dharwad", "Gadag", "Hassan", "Haveri", "Kalaburagi", "Kodagu", "Kolar", "Koppal", "Mandya", "Mysuru", "Raichur", "Ramanagara", "Shivamogga", "Tumakuru", "Udupi", "Uttara Kannada", "Vijayanagara", "Yadgir"],
+        "Kerala": ["Alappuzha", "Ernakulam", "Idukki", "Kannur", "Kasaragod", "Kollam", "Kottayam", "Kozhikode", "Malappuram", "Palakkad", "Pathanamthitta", "Thiruvananthapuram", "Thrissur", "Wayanad"],
+        "Madhya Pradesh": ["Agar Malwa", "Alirajpur", "Anuppur", "Ashok Nagar", "Balaghat", "Barwani", "Betul", "Bhind", "Bhopal", "Burhanpur", "Chhatarpur", "Chhindwara", "Damoh", "Datia", "Dewas", "Dhar", "Dindori", "Guna", "Gwalior", "Harda", "Hoshangabad", "Indore", "Jabalpur", "Jhabua", "Katni", "Khandwa", "Khargone", "Mandla", "Mandsaur", "Morena", "Narsinghpur", "Neemuch", "Panna", "Raisen", "Rajgarh", "Ratlam", "Rewa", "Sagar", "Satna", "Sehore", "Seoni", "Shahdol", "Shajapur", "Sheopur", "Shivpuri", "Sidhi", "Singrauli", "Tikamgarh", "Ujjain", "Umaria", "Vidisha"],
+        "Maharashtra": ["Ahmednagar", "Akola", "Amravati", "Aurangabad", "Beed", "Bhandara", "Buldhana", "Chandrapur", "Dhule", "Gadchiroli", "Gondia", "Hingoli", "Jalgaon", "Jalna", "Kolhapur", "Latur", "Mumbai City", "Mumbai Suburban", "Nagpur", "Nanded", "Nandurbar", "Nashik", "Osmanabad", "Palghar", "Parbhani", "Pune", "Raigad", "Ratnagiri", "Sangli", "Satara", "Sindhudurg", "Solapur", "Thane", "Wardha", "Washim", "Yavatmal"],
+        "Manipur": ["Bishnupur", "Chandel", "Churachandpur", "Imphal East", "Imphal West", "Jiribam", "Kakching", "Kamjong", "Kangpokpi", "Noney", "Pherzawl", "Senapati", "Tamenglong", "Tengnoupal", "Thoubal", "Ukhrul"],
+        "Meghalaya": ["East Garo Hills", "East Jaintia Hills", "East Khasi Hills", "North Garo Hills", "Ri Bhoi", "South Garo Hills", "South West Garo Hills", "South West Khasi Hills", "West Garo Hills", "West Jaintia Hills", "West Khasi Hills"],
+        "Mizoram": ["Aizawl", "Champhai", "Kolasib", "Lawngtlai", "Lunglei", "Mamit", "Saiha", "Serchhip"],
+        "Nagaland": ["Dimapur", "Kiphire", "Kohima", "Longleng", "Mokokchung", "Mon", "Peren", "Phek", "Tuensang", "Wokha", "Zunheboto"],
+        "Odisha": ["Angul", "Balangir", "Balasore", "Bargarh", "Bhadrak", "Boudh", "Cuttack", "Deogarh", "Dhenkanal", "Gajapati", "Ganjam", "Jagatsinghpur", "Jajpur", "Jharsuguda", "Kalahandi", "Kandhamal", "Kendrapara", "Kendujhar", "Khordha", "Koraput", "Malkangiri", "Mayurbhanj", "Nabarangpur", "Nayagarh", "Nuapada", "Puri", "Rayagada", "Sambalpur", "Sonepur", "Sundergarh"],
+        "Punjab": ["Amritsar", "Barnala", "Bathinda", "Faridkot", "Fatehgarh Sahib", "Fazilka", "Firozpur", "Gurdaspur", "Hoshiarpur", "Jalandhar", "Kapurthala", "Ludhiana", "Mansa", "Moga", "Muktsar", "Nawanshahr", "Pathankot", "Patiala", "Rupnagar", "Sahibzada Ajit Singh Nagar", "Sangrur", "Tarn Taran"],
+        "Rajasthan": ["Ajmer", "Alwar", "Banswara", "Baran", "Barmer", "Bharatpur", "Bhilwara", "Bikaner", "Bundi", "Chittorgarh", "Churu", "Dausa", "Dholpur", "Dungarpur", "Ganganagar", "Hanumangarh", "Jaipur", "Jaisalmer", "Jalore", "Jhalawar", "Jhunjhunu", "Jodhpur", "Karauli", "Kota", "Nagaur", "Pali", "Pratapgarh", "Rajsamand", "Sawai Madhopur", "Sikar", "Sirohi", "Tonk", "Udaipur"],
+        "Sikkim": ["East Sikkim", "North Sikkim", "South Sikkim", "West Sikkim"],
+        "Tamil Nadu": ["Ariyalur", "Chengalpattu", "Chennai", "Coimbatore", "Cuddalore", "Dharmapuri", "Dindigul", "Erode", "Kallakurichi", "Kancheepuram", "Karur", "Krishnagiri", "Madurai", "Nagapattinam", "Namakkal", "Nilgiris", "Perambalur", "Pudukkottai", "Ramanathapuram", "Ranipet", "Salem", "Sivaganga", "Tenkasi", "Thanjavur", "Theni", "Thoothukudi", "Tiruchirappalli", "Tirunelveli", "Tiruppur", "Tiruvallur", "Tiruvarur", "Vellore", "Viluppuram", "Virudhunagar"],
+        "Telangana": ["Adilabad", "Bhadradri Kothagudem", "Hyderabad", "Jagtial", "Jangaon", "Jayashankar Bhoopalpally", "Jogulamba Gadwal", "Kamareddy", "Karimnagar", "Khammam", "Komaram Bheem Asifabad", "Mahabubabad", "Mahabubnagar", "Mancherial", "Medak", "Medchal Malkajgiri", "Mulugu", "Nagarkurnool", "Nalgonda", "Narayanpet", "Nirmal", "Nizamabad", "Peddapalli", "Rajanna Sircilla", "Rangareddy", "Sangareddy", "Siddipet", "Suryapet", "Vikarabad", "Wanaparthy", "Warangal (Rural)", "Warangal (Urban)", "Yadadri Bhuvanagiri"],
+        "Tripura": ["Dhalai", "Gomati", "Khowai", "North Tripura", "Sepahijala", "South Tripura", "Unakoti", "West Tripura"],
+        "Uttar Pradesh": ["Agra", "Aligarh", "Allahabad (Prayagraj)", "Ambedkar Nagar", "Amethi", "Amroha", "Auraiya", "Azamgarh", "Baghpat", "Bahraich", "Ballia", "Balrampur", "Banda", "Barabanki", "Bareilly", "Basti", "Bhadohi", "Bijnor", "Budaun", "Bulandshahr", "Chandauli", "Chitrakoot", "Deoria", "Etah", "Etawah", "Farrukhabad", "Fatehpur", "Firozabad", "Gautam Buddha Nagar", "Ghaziabad", "Ghazipur", "Gonda", "Gorakhpur", "Hamirpur", "Hapur", "Hardoi", "Hathras", "Jalaun", "Jaunpur", "Jhansi", "Kannauj", "Kanpur Dehat", "Kanpur Nagar", "Kasganj", "Kaushambi", "Kushinagar", "Lakhimpur Kheri", "Lalitpur", "Lucknow", "Maharajganj", "Mahoba", "Mainpuri", "Mathura", "Mau", "Meerut", "Mirzapur", "Moradabad", "Muzaffarnagar", "Pilibhit", "Pratapgarh", "Raebareli", "Rampur", "Saharanpur", "Sambhal", "Sant Kabir Nagar", "Shahjahanpur", "Shamli", "Shravasti", "Siddharth Nagar", "Sitapur", "Sonbhadra", "Sultanpur", "Unnao", "Varanasi"],
+        "Uttarakhand": ["Almora", "Bageshwar", "Chamoli", "Champawat", "Dehradun", "Haridwar", "Nainital", "Pauri Garhwal", "Pithoragarh", "Rudraprayag", "Tehri Garhwal", "Udham Singh Nagar", "Uttarkashi"],
+        "West Bengal": ["Alipurduar", "Bankura", "Birbhum", "Cooch Behar", "Dakshin Dinajpur", "Darjeeling", "Hooghly", "Howrah", "Jalpaiguri", "Jhargram", "Kalimpong", "Kolkata", "Malda", "Murshidabad", "Nadia", "North 24 Parganas", "Paschim Bardhaman", "Paschim Medinipur", "Purba Bardhaman", "Purba Medinipur", "Purulia", "South 24 Parganas", "Uttar Dinajpur"]
+      };
+
+    const stateSelect = document.getElementById("state");
+    const districtSelect = document.getElementById("district");
+    const manualInputSection = document.querySelector('.manual-input-section');
+    const csvUploadSection = document.querySelector('.csv-upload-section');
+    const inputOptionRadios = document.querySelectorAll('input[name="inputOption"]');
+    const predictionForm = document.getElementById('predictionForm');
+
+    // Populate states on page load
+    Object.keys(statesAndDistricts).forEach(state => {
+      const option = document.createElement("option");
+      option.value = state;
+      option.textContent = state;
+      stateSelect.appendChild(option);
+    });
+
+    // Event listener for state change to populate districts
+    stateSelect.addEventListener("change", function() {
+      districtSelect.innerHTML = '<option value="">Select District</option>'; // Reset districts
+      const districts = statesAndDistricts[this.value] || [];
+      districts.forEach(district => {
+        const option = document.createElement("option");
+        option.value = district;
+        option.textContent = district;
+        districtSelect.appendChild(option);
+      });
+    });
+
+    // Function to toggle input sections and required attributes
+    function toggleInputSections() {
+      const isManual = document.getElementById('manualInput').checked;
+
+      if (isManual) {
+        manualInputSection.classList.add('active');
+        csvUploadSection.classList.remove('active');
+        predictionForm.removeAttribute('enctype'); // Remove enctype for manual form
+
+        // Set required for manual inputs
+        document.querySelectorAll('.manual-input-section input, .manual-input-section select').forEach(input => {
+          input.setAttribute('required', 'true');
+        });
+        document.getElementById('csv_file').removeAttribute('required');
+      } else {
+        manualInputSection.classList.remove('active');
+        csvUploadSection.classList.add('active');
+        predictionForm.setAttribute('enctype', 'multipart/form-data'); // Add enctype for file upload
+
+        // Set required for CSV input
+        document.querySelectorAll('.manual-input-section input, .manual-input-section select').forEach(input => {
+          input.removeAttribute('required');
+        });
+        document.getElementById('csv_file').setAttribute('required', 'true');
+      }
+    }
+
+    // Add event listeners for radio buttons
+    inputOptionRadios.forEach(radio => {
+      radio.addEventListener('change', toggleInputSections);
+    });
+
+    // Initial call to set the correct section on page load
+    toggleInputSections();
+
+    // JavaScript for 3D tilt effect on container (if needed, but CSS hover is usually enough)
+    // The main.container already has AOS and GSAP effects from script.js
+    // If you want a specific tilt for the form container, you can add it here.
+    // For now, relying on the general .container styles from style.css and script.js
+
+    // Add initial entrance animations on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      // AOS is initialized in script.js, which is loaded after this script block.
+      // So, AOS.init() will handle the data-aos attributes.
+      // No need for explicit animation calls here if AOS is handling it.
+    });
+  </script>
+</body>
+</html>

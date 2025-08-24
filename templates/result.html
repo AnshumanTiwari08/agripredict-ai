@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediction Result</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('serve_css', filename='style.css') }}">
+  <style>
+    /* Variables for easy theme changes - REVERTED TO ORIGINAL PALETTE */
+    :root {
+      --original-light-green: #e6f7e6;
+      --original-medium-green: #ccffcc;
+      --original-dark-green: #2d862d;
+      --original-darker-green: #246624; /* Slightly darker for hover */
+
+      --text-color-dark: #333333;
+      --text-color-light: #FFFFFF;
+
+      /* Glassmorphism specific colors - Adjusted for original palette */
+      --glass-bg: rgba(255, 255, 255, 0.5); /* Increased opacity for better visibility */
+      --glass-border: rgba(255, 255, 255, 0.3); /* Clearer white border */
+      --glass-shadow: rgba(0, 0, 0, 0.25);
+    }
+
+    /* General Body and Background - REVERTED TO ORIGINAL GRADIENT */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, var(--original-light-green), var(--original-medium-green));
+      background-size: 400% 400%;
+      animation: backgroundShift 20s ease infinite, backgroundPulse 10s ease-in-out infinite;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: visible;
+      color: var(--text-color-dark);
+      perspective: 1000px;
+    }
+
+    /* Animated SVG Background Pattern */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M100 0L0 100H100V0zM0 0L100 100V0z' fill='%23000000' opacity='0.02'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      animation: patternMove 60s linear infinite, patternRotate 120s linear infinite;
+      opacity: 1;
+      z-index: -1;
+    }
+
+    /* Keyframes for animations */
+    @keyframes backgroundPulse {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(1.05); }
+      100% { filter: brightness(1); }
+    }
+
+    @keyframes patternRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes backgroundShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes patternMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
+    }
+
+    /* Header Styling */
+    header {
+      background-color: var(--original-dark-green);
+      padding: 25px;
+      text-align: center;
+      color: var(--text-color-light);
+      width: 100%;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 10;
+      font-family: 'Montserrat', sans-serif;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      color: #fff; /* Make the heading white */
+    }
+
+    /* Container Styling */
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      background: var(--glass-bg);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px var(--glass-shadow);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      padding: 40px;
+      z-index: 5;
+      position: relative;
+      transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+      animation: fadeInUp 1s ease-out 0.5s forwards;
+      opacity: 1; /* Ensure the container is fully visible */
+    }
+
+    h2 {
+      color: var(--original-dark-green);
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.8em;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Result Text Styling */
+    p {
+      text-align: center;
+      font-size: 1.5em;
+      margin: 20px 0;
+      color: var(--text-color-dark); /* Changed to dark for better contrast on light background */
+    }
+
+    /* Table Styling for CSV results */
+    .prediction-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: var(--text-color-dark);
+    }
+    .prediction-table th, .prediction-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .prediction-table th {
+        background-color: var(--original-dark-green);
+        color: var(--text-color-light);
+        font-weight: bold;
+    }
+    .prediction-table tr:nth-child(even) {
+        background-color: rgba(242, 242, 242, 0.5);
+    }
+    .prediction-table tr:hover {
+        background-color: rgba(221, 221, 221, 0.5);
+    }
+
+
+    /* Button Styling */
+    .button {
+      display: inline-block;
+      text-align: center;
+      margin-top: 20px;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      color: var(--text-color-light);
+      background: linear-gradient(45deg, var(--original-dark-green), var(--original-darker-green));
+      border: none;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .button:hover {
+      background: linear-gradient(45deg, var(--original-darker-green), var(--original-dark-green));
+      transform: translateY(-3px);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .container {
+        margin: 30px 20px;
+        padding: 25px;
+      }
+      header h1 {
+        font-size: 2em;
+      }
+      h2 {
+        font-size: 1.8em;
+      }
+      p {
+        font-size: 1.2em;
+      }
+      .button {
+        font-size: 1em;
+        padding: 10px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        margin: 20px 15px;
+        padding: 20px;
+      }
+      header h1 {
+        font-size: 1.5em;
+      }
+      h2 {
+        font-size: 1.5em;
+      }
+      p {
+        font-size: 1em;
+      }
+      .button {
+        font-size: 0.9em;
+        padding: 8px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🌾 Prediction Result 🌱</h1>
+</header>
+
+<div class="container">
+  {% if error %}
+    <h2>Error</h2>
+    <p style="color:red;">{{ error }}</p>
+  {% elif predictions_df %}
+    <h2>Predicted Crop Yield from CSV</h2>
+    <div class="prediction-table-container" style="overflow-x:auto;">
+        {{ predictions_df | safe }}
+    </div>
+  {% else %}
+    <h2>Predicted Crop Yield</h2>
+    <p>The predicted crop production is: <strong>{{ prediction }}</strong> tonnes</p>
+  {% endif %}
+  
+  <a href="{{ url_for('predict') }}" class="button">Make another prediction</a>
+</div>
+
+<script>
+  // Add entrance animations on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('header').style.animation = 'fadeInDown 1s ease-out forwards';
+    document.querySelector('.container').style.animation = 'fadeInUp 1s ease-out 0.5s forwards';
+  });
+</script>
+
+</body>
+</html>
