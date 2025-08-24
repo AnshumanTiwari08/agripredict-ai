@@ -334,32 +334,36 @@
   const successPopup = document.getElementById("successPopup");
 
   form.addEventListener("submit", (e) => {
-    e.preventDefault(); // prevent reload
+    e.preventDefault(); // prevent page reload
 
     // Change button text while sending
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
     submitBtn.disabled = true;
 
-    fetch(scriptURL, { method: "POST", body: new FormData(form) })
-      .then((response) => {
-        if (response.ok) {
-          // Show popup + overlay
+    fetch(scriptURL, {
+      method: "POST",
+      body: new FormData(form) // send form fields
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          // Show overlay + success popup
           overlay.style.display = "block";
           successPopup.style.display = "block";
-          void overlay.offsetWidth; // reflow for transition
+          void overlay.offsetWidth; // reflow for CSS transition
           void successPopup.offsetWidth;
           overlay.classList.add("show");
           successPopup.classList.add("show");
 
           form.reset();
         } else {
-          alert("❌ Failed to send message. Please try again.");
+          alert("❌ Failed to send message: " + data.message);
         }
       })
-      .catch((error) => {
-        alert("❌ Failed to send message. Please try again.");
+      .catch(error => {
         console.error("Error!", error.message);
+        alert("❌ Failed to send message. Please try again.");
       })
       .finally(() => {
         // Restore button text
@@ -373,7 +377,7 @@
           setTimeout(() => {
             overlay.style.display = "none";
             successPopup.style.display = "none";
-          }, 300); // matches CSS transition
+          }, 300);
         }, 3000);
       });
   });
