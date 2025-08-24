@@ -1,7 +1,22 @@
+# Web framework
 Flask==3.0.3
-catboost==1.2.5
+gunicorn==21.2.0
+
+# Data processing
 pandas==2.2.2
 numpy==1.26.4
 scikit-learn==1.5.1
 joblib==1.4.2
-gunicorn
+
+# Machine learning
+catboost==1.2.5
+
+# Optional: For Jupyter notebooks, if needed without Rust builds
+notebook==6.5.4
+ipywidgets==8.2.3
+traitlets==5.14.3
+tornado==6.3.3
+jupyter-core==5.3.1
+jupyter-client==8.6.3
+nbformat==5.10.4
+nbconvert==7.16.6
