@@ -1,16 +1,14 @@
---only-binary=:all:
-
 # Web framework
 flask==2.3.3
 gunicorn==21.2.0
 
-# Data processing & ML
-pandas==2.2.3
+# Data processing
+pandas==2.2.2
 numpy==1.26.4
-scikit-learn==1.5.2
+scikit-learn==1.5.1
 joblib==1.4.2
 
 # Machine learning models
-catboost==1.2.8
+catboost==1.2.5
 xgboost==2.1.1
 lightgbm==4.5.0
