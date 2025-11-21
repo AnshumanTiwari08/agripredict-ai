@@ -31,38 +31,46 @@
   <script src="{{ url_for('serve_js', filename='script.js') }}"></script>
     <!-- Image Slideshow Section -->
     <section class="slideshow-section" data-aos="fade-in">
-      <div class="slideshow-container">
-        <div class="slide fade">
-          <img src="https://placehold.co/1200x500" alt="Student team working on agricultural AI project with laptops and data visualization">
-          <div class="slide-caption">Student Innovation in Agriculture</div>
-        </div>
-        <div class="slide fade">
-          <img src="https://placehold.co/1200x500" alt="Machine learning algorithms processing crop data in academic research environment">
-          <div class="slide-caption">Academic Research Project</div>
-        </div>
-        <div class="slide fade">
-          <img src="https://placehold.co/1200x500" alt="Students presenting agricultural technology project to faculty members">
-          <div class="slide-caption">Educational Technology Showcase</div>
-        </div>
-        <div class="slide fade">
-          <img src="https://placehold.co/1200x500" alt="Data science students analyzing agricultural patterns and crop yield predictions">
-          <div class="slide-caption">Data Science in Agriculture</div>
-        </div>
-        
-        <!-- Navigation arrows -->
-        <a class="prev" onclick="plusSlides(-1)">❮</a>
-        <a class="next" onclick="plusSlides(1)">❯</a>
-      </div>
-      
-      <!-- Dots indicator -->
-      <div class="dots-container">
-        <span class="dot" onclick="currentSlide(1)"></span>
-        <span class="dot" onclick="currentSlide(2)"></span>
-        <span class="dot" onclick="currentSlide(3)"></span>
-        <span class="dot" onclick="currentSlide(4)"></span>
-      </div>
-    </section>
+  <div class="slideshow-container">
 
+    <div class="slide fade">
+      <img src="{{ url_for('static', filename='about/StudentInnovation.jpg') }}" 
+           alt="Student team working on agricultural AI project with laptops and data visualization">
+      <div class="slide-caption">Student Innovation in Agriculture</div>
+    </div>
+
+    <div class="slide fade">
+      <img src="{{ url_for('static', filename='about/DataScience.jpeg') }}" 
+           alt="Machine learning algorithms processing crop data in academic research environment">
+      <div class="slide-caption">Academic Research Project</div>
+    </div>
+
+    <div class="slide fade">
+      <img src="{{ url_for('static', filename='about/EducationalTechnology.jpeg') }}" 
+           alt="Students presenting agricultural technology project to faculty members">
+      <div class="slide-caption">Educational Technology Showcase</div>
+    </div>
+
+    <div class="slide fade">
+      <img src="{{ url_for('static', filename='about/DataScience.jpeg') }}" 
+           alt="Data science students analyzing agricultural patterns and crop yield predictions">
+      <div class="slide-caption">Data Science in Agriculture</div>
+    </div>
+
+    <!-- Navigation arrows -->
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+  </div>
+
+  <!-- Dots indicator -->
+  <div class="dots-container">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+    <span class="dot" onclick="currentSlide(4)"></span>
+  </div>
+</section>
+    
     <!-- Hero Section -->
     <section class="about-hero">
       <div class="container" data-aos="fade-up">
@@ -81,7 +89,9 @@
             <p>This project represents our commitment to exploring innovative solutions that combine technical expertise with environmental sustainability, showcasing the potential of AI in transforming traditional farming practices.</p>
           </div>
           <div class="overview-image" data-aos="fade-left" data-aos-delay="300">
-            <img src="https://placehold.co/500x400" alt="Academic project workflow showing data collection, AI processing, and agricultural applications">
+            <img src="{{ url_for('static', filename='about/ProjectOverview.jpeg') }}" 
+              alt="Academic project workflow showing data collection, AI processing, and agricultural applications">
+          
           </div>
         </div>
       </div>
