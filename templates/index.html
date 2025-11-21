@@ -31,43 +31,49 @@
   <script src="{{ url_for('serve_js', filename='script.js') }}"></script>
     <!-- Image Slideshow Section -->
     <section class="slideshow-section" data-aos="fade-in">
-      <div class="slideshow-container">
-        <div class="slide fade">
-          <img src="https://placehold.co/1200x500" alt="Agricultural drone flying over lush green crop fields with advanced monitoring technology">
-          <div class="slide-caption">AI-Powered Precision Agriculture</div>
-        </div>
-        <div class="slide fade">
-          <img src="https://placehold.co/1200x500" alt="Farmer using tablet to analyze crop data in field with digital dashboard overlay">
-          <div class="slide-caption">Real-time Crop Analytics</div>
-        </div>
-        <div class="slide fade">
-          <img src="https://placehold.co/1200x500" alt="Data visualization dashboard showing crop yield predictions and weather patterns">
-          <div class="slide-caption">Advanced Data Visualization</div>
-        </div>
-        <div class="slide fade">
-          <img src="https://placehold.co/1200x500" alt="Sustainable farming practices with solar panels and modern irrigation systems">
-          <div class="slide-caption">Sustainable Farming Solutions</div>
-        </div>
-        <div class="slide fade">
-          <img src="https://placehold.co/1200x500" alt="Machine learning algorithms processing agricultural data with neural network visualization">
-          <div class="slide-caption">Machine Learning in Agriculture</div>
-        </div>
-        
-        <!-- Navigation arrows -->
-        <a class="prev" onclick="plusSlides(-1)">❮</a>
-        <a class="next" onclick="plusSlides(1)">❯</a>
-      </div>
-      
-      <!-- Dots indicator -->
-      <div class="dots-container">
-        <span class="dot" onclick="currentSlide(1)"></span>
-        <span class="dot" onclick="currentSlide(2)"></span>
-        <span class="dot" onclick="currentSlide(3)"></span>
-        <span class="dot" onclick="currentSlide(4)"></span>
-        <span class="dot" onclick="currentSlide(5)"></span>
-      </div>
-    </section>
+  <div class="slideshow-container">
 
+    <div class="slide fade">
+      <img src="{{ url_for('static', filename='index/AI-Precision.jpg') }}" alt="AI-powered precision agriculture">
+      <div class="slide-caption">AI-Powered Precision Agriculture</div>
+    </div>
+
+    <div class="slide fade">
+      <img src="{{ url_for('static', filename='index/RealTimeCropAnalytics.jpg') }}" alt="Real-time crop analytics">
+      <div class="slide-caption">Real-time Crop Analytics</div>
+    </div>
+
+    <div class="slide fade">
+      <img src="{{ url_for('static', filename='index/DataVisualization.jpg') }}" alt="Advanced data visualization">
+      <div class="slide-caption">Advanced Data Visualization</div>
+    </div>
+
+    <div class="slide fade">
+      <img src="{{ url_for('static', filename='index/SustainableFarmingSol.jpg') }}" alt="Sustainable farming solutions">
+      <div class="slide-caption">Sustainable Farming Solutions</div>
+    </div>
+
+    <div class="slide fade">
+      <img src="{{ url_for('static', filename='index/MachineLearning.jpg') }}" alt="Machine learning in agriculture">
+      <div class="slide-caption">Machine Learning in Agriculture</div>
+    </div>
+
+    <!-- Navigation arrows -->
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+
+  </div>
+
+  <!-- Dots indicator -->
+  <div class="dots-container">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+    <span class="dot" onclick="currentSlide(4)"></span>
+    <span class="dot" onclick="currentSlide(5)"></span>
+  </div>
+</section>
+    
     <!-- Hero Section -->
     <div class="container hero-container" data-aos="zoom-in" data-aos-delay="200">
   <h1>Revolutionizing Agriculture with AI</h1>
